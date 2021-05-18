@@ -26,25 +26,13 @@ isTermux=${ANDROID_RUNTIME_ROOT}${ANDROID_ROOT}
 ScriptsURL=git@gitee.com:lxk0301/jd_scripts
 ScriptsURL2=https://github.com/Zero-S1/xmly_speed
 ScriptsURL3=https://github.com/kangwenhang/jd_docker2
-ShellURL=https://github.com/dockere/jd-base
+ShellURL=https://github.com/ChangWeiCat/jd-base
 
 ## 更新crontab，gitee服务器同一时间限制5个链接，因此每个人更新代码必须错开时间，每次执行git_pull随机生成。
 ## 每天次数随机，更新时间随机，更新秒数随机，至少6次，至多12次，大部分为8-10次，符合正态分布。
 function Update_Cron {
   if [ -f ${ListCron} ]; then
-    RanMin=$((${RANDOM} % 60))
-    RanSleep=$((${RANDOM} % 56))
-    RanHourArray[0]=$((${RANDOM} % 3))
-    for ((i=1; i<14; i++)); do
-      j=$(($i - 1))
-      tmp=$((${RANDOM} % 3 + ${RanHourArray[j]} + 2))
-      [[ ${tmp} -lt 24 ]] && RanHourArray[i]=${tmp} || break
-    done
-    RanHour=${RanHourArray[0]}
-    for ((i=1; i<${#RanHourArray[*]}; i++)); do
-      RanHour="${RanHour},${RanHourArray[i]}"
-    done
-    perl -i -pe "s|.+(bash git_pull.+)|${RanMin} ${RanHour} \* \* \* sleep ${RanSleep} && \1|" ${ListCron}
+    perl -i -pe "s|30 8-20/4(.+jd_nian\W*.*)|28 8-20/4,21\1|" ${ListCron} # 修改默认错误的cron
     crontab ${ListCron}
   fi
 }
@@ -383,7 +371,7 @@ if [ ${ExitStatusShell} -eq 0 ]; then
   [ -f ${ScriptsDir}/package.json ] && PackageListOld=$(cat ${ScriptsDir}/package.json)
   [ -f ${ScriptsDir3}/package.json ] && PackageListOld3=$(cat ${ScriptsDir3}/package.json)
   [ -d ${ScriptsDir}/.git ] && Git_PullScripts || Git_CloneScripts
-  [ -d ${ScriptsDir2}/.git ] && Git_PullScripts2 || Git_CloneScripts2
+  #[ -d ${ScriptsDir2}/.git ] && Git_PullScripts2 || Git_CloneScripts2
   [ -d ${ScriptsDir3}/.git ] && Git_PullScripts3 || Git_CloneScripts3
 fi
 
