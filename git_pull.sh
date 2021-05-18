@@ -351,20 +351,20 @@ echo -e "JS脚本目录：${ScriptsDir}\n"
 echo -e "--------------------------------------------------------------\n"
 
 ## 更新shell脚本、检测配置文件版本并将sample/config.sh.sample复制到config目录下
-Git_PullShell && Update_Cron
-VerConfSample=$(grep " Version: " ${FileConfSample} | perl -pe "s|.+v((\d+\.?){3})|\1|")
-[ -f ${FileConf} ] && VerConf=$(grep " Version: " ${FileConf} | perl -pe "s|.+v((\d+\.?){3})|\1|")
-if [ ${ExitStatusShell} -eq 0 ]
-then
-  echo -e "\nshell脚本更新完成...\n"
-  if [ -n "${JD_DIR}" ] && [ -d ${ConfigDir} ]; then
-    cp -f ${FileConfSample} ${ConfigDir}/config.sh.sample
-  fi
-else
-  echo -e "\nshell脚本更新失败，请检查原因后再次运行git_pull.sh，或等待定时任务自动再次运行git_pull.sh...\n"
-fi
+#Git_PullShell && Update_Cron
+#VerConfSample=$(grep " Version: " ${FileConfSample} | perl -pe "s|.+v((\d+\.?){3})|\1|")
+#[ -f ${FileConf} ] && VerConf=$(grep " Version: " ${FileConf} | perl -pe "s|.+v((\d+\.?){3})|\1|")
+#if [ ${ExitStatusShell} -eq 0 ]
+#then
+#  echo -e "\nshell脚本更新完成...\n"
+#  if [ -n "${JD_DIR}" ] && [ -d ${ConfigDir} ]; then
+#    cp -f ${FileConfSample} ${ConfigDir}/config.sh.sample
+#  fi
+#else
+#  echo -e "\nshell脚本更新失败，请检查原因后再次运行git_pull.sh，或等待定时任务自动再次运行git_pull.sh...\n"
+#fi
 ## 更新crontab
-[[ $(date "+%-H") -le 2 ]] && Update_Cron
+#[[ $(date "+%-H") -le 2 ]] && Update_Cron
 ## 克隆或更新js及py脚本
 if [ ${ExitStatusShell} -eq 0 ]; then
   echo -e "--------------------------------------------------------------\n"
